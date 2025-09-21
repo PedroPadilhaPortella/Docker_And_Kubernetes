@@ -1,0 +1,10 @@
+services:
+  redis-server:
+    image: 'redis'
+  node-app:
+    build: .
+    ports:
+      - '8081:8081'
+    depends_on:
+      - redis-server
+    restart: on-failure
