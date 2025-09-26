@@ -1,0 +1,21 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "express server",
+  "author": "pedropadilhaportella",
+  "main": "index.js",
+  "scripts": {
+    "start": "cross-env NODE_ENV=production node index.js",
+    "dev": "cross-env NODE_ENV=development nodemon"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "nodemon": "^3.1.10",
+    "pg": "^8.0.3",
+    "redis": "^4.7.1"
+  },
+  "devDependencies": {
+    "cross-env": "^10.0.0"
+  }
+}
