@@ -20,6 +20,9 @@ services:
       - PGDATABASE=postgres
       - PGPASSWORD=postgres_password
       - PGPORT=5432
+    depends_on:
+      - redis
+      - postgres
   worker:
     build:
       context: ./worker
@@ -30,6 +33,8 @@ services:
     environment:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
+    depends_on:
+      - redis
   client:
     build:
       context: ./client
@@ -37,6 +42,10 @@ services:
     volumes:
       - /app/node_modules
       - ./client:/app
+    environment:
+      - WDS_SOCKET_PORT=0
+    depends_on:
+      - api
   ngnix:
     build:
       context: ./nginx

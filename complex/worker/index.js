@@ -19,3 +19,5 @@ redisPublisher.on('message', (channel, message) => {
     const result = fibonacci(parseInt(message));
     redisClient.hset('values', message, result);
 });
+
+redisPublisher.subscribe('insert');
