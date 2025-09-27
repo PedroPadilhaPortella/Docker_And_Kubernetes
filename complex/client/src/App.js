@@ -13,10 +13,11 @@ function App() {
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-          <Link to="/">Fibonacci</Link> | <Link to="/otherpage">Other Page</Link>
+          <h1 className="App-title">Welcome to Fibonacci</h1>
+          <div className='App-menu'><Link to="/">Fibonacci</Link> | <Link to="/otherpage">Other Page</Link></div>
+          
         </header>
-        <div>
+        <div className="App-body">
           <Route exact path="/" component={Fibonacci} />
           <Route path="/otherpage" component={OtherPage} />
         </div>
