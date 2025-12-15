@@ -11,3 +11,9 @@ after_success:
   - docker build -t pedropadilhaportella/multi-nginx ./nginx
   - docker build -t pedropadilhaportella/multi-server ./server
   - docker build -t pedropadilhaportella/multi-worker ./worker
+
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  - docker push pedropadilhaportella/multi-client
+  - docker push pedropadilhaportella/multi-nginx
+  - docker push pedropadilhaportella/multi-server
+  - docker push pedropadilhaportella/multi-worker

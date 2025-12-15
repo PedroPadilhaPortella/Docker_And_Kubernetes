@@ -18,14 +18,21 @@ jobs:
             --password-stdin
 
       - name: Build imagem de testes
-        run: docker build -t pedropadilhaportella/react-test -f ./complex/client/Dockerfile.dev ./complex/client
+        run: docker build -t pedropadilhaportella/react-test -f ./client/Dockerfile.dev ./client
 
       - name: Execucao dos testes
         run: docker run -e CI=true pedropadilhaportella/react-test npm run test -- --coverage
 
       - name: Build imagens finais
         run: |
-          docker build -t pedropadilhaportella/multi-client ./complex/client
-          docker build -t pedropadilhaportella/multi-nginx ./complex/nginx
-          docker build -t pedropadilhaportella/multi-server ./complex/server
-          docker build -t pedropadilhaportella/multi-worker ./complex/worker
+          docker build -t pedropadilhaportella/multi-client ./client
+          docker build -t pedropadilhaportella/multi-nginx ./nginx
+          docker build -t pedropadilhaportella/multi-server ./server
+          docker build -t pedropadilhaportella/multi-worker ./worker
+
+      - name: Push imagens
+        run: |
+          docker push pedropadilhaportella/multi-client
+          docker push pedropadilhaportella/multi-nginx
+          docker push pedropadilhaportella/multi-server
+          docker push pedropadilhaportella/multi-worker
