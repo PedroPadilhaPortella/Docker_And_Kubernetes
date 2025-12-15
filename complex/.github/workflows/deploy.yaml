@@ -8,13 +8,24 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-      - run: docker build -t pedropadilhaportella/react-test -f ./client/Dockerfile.dev ./client
-      - run: docker run -e CI=true pedropadilhaportella/react-test npm run test -- --coverage
+      - name: Checkout do código
+        uses: actions/checkout@v4
 
-      - name: Build each service
-        run: docker build -t pedropadilhaportella/multi-client ./client
-        run: docker build -t pedropadilhaportella/multi-nginx ./nginx
-        run: docker build -t pedropadilhaportella/multi-server ./server
-        run: docker build -t pedropadilhaportella/multi-worker ./worker
+      - name: Login no Docker Hub
+        run: |
+          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login \
+            -u "${{ secrets.DOCKER_USERNAME }}" \
+            --password-stdin
+
+      - name: Build imagem de testes
+        run: docker build -t pedropadilhaportella/react-test -f ./complex/client/Dockerfile.dev ./complex/client
+
+      - name: Execucao dos testes
+        run: docker run -e CI=true pedropadilhaportella/react-test npm run test -- --coverage
+
+      - name: Build imagens finais
+        run: |
+          docker build -t pedropadilhaportella/multi-client ./complex/client
+          docker build -t pedropadilhaportella/multi-nginx ./complex/nginx
+          docker build -t pedropadilhaportella/multi-server ./complex/server
+          docker build -t pedropadilhaportella/multi-worker ./complex/worker
