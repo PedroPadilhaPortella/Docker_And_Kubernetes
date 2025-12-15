@@ -1,0 +1,20 @@
+name: Deploy Complex Multi Project
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+      - run: docker build -t pedropadilhaportella/react-test -f ./client/Dockerfile.dev ./client
+      - run: docker run -e CI=true pedropadilhaportella/react-test npm run test -- --coverage
+
+      - name: Build each service
+        run: docker build -t pedropadilhaportella/multi-client ./client
+        run: docker build -t pedropadilhaportella/multi-nginx ./nginx
+        run: docker build -t pedropadilhaportella/multi-server ./server
+        run: docker build -t pedropadilhaportella/multi-worker ./worker
