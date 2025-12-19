@@ -13,7 +13,19 @@ after_success:
   - docker build -t pedropadilhaportella/multi-worker ./worker
 
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
   - docker push pedropadilhaportella/multi-client
   - docker push pedropadilhaportella/multi-nginx
   - docker push pedropadilhaportella/multi-server
   - docker push pedropadilhaportella/multi-worker
+deploy:
+  provider: elasticbeanstalk
+  region: 'us-east-1'
+  app: 'multi-docker'
+  env: 'MultiDocker-env'
+  bucket_name: 'elasticbeanstalk-us-east-1-923445559289'
+  bucket_path: 'docker-multi'
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
