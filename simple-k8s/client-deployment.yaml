@@ -1,0 +1,26 @@
+# kubectl apply -f client-deployment.yaml
+# kubectl get deployments
+# kubectl describe deployment client-deployment
+
+# How to imperatively update the image of a deployment: 
+# kubectl set image deployment/client-deploymentdeployment client=stephengrider/multi-client:latest
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: web
+  template:
+    metadata:
+      labels:
+        component: web
+    spec:
+      containers:
+        - name: client
+          image: stephengrider/multi-client:latest
+          ports:
+            - containerPort: 3000
